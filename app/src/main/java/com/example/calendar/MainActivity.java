@@ -23,9 +23,12 @@ import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private long BackBtnTime = 0;
     public static final int REQUEST_CODE = 777;
     CalendarView calendarView;
 
+    //onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        //달력 뷰를 보여주고, 클릭했을 때 인텐트 값을 넘겨줌
         calendarView.setDayBinder(new DayBinder<DayViewContainer>() {
             @Override
             public DayViewContainer create(View view) {
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+        //뷰 보여줌
         YearMonth currentMonth = YearMonth.now();
         YearMonth firstMonth = currentMonth.minusMonths(12);
         YearMonth lastMonth = currentMonth.plusMonths(12);
@@ -78,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         calendarView.scrollToMonth(currentMonth);
     }
 
+
+    //인텐트 값을 받음
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -87,5 +92,20 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "으아", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        long curTime = System.currentTimeMillis();
+        long gapTime = curTime - BackBtnTime;
+
+        if(0 <= gapTime && 2000 >= gapTime){
+            super.onBackPressed();
+        }
+        else{
+            BackBtnTime = curTime;
+            Toast.makeText(this, "한번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
