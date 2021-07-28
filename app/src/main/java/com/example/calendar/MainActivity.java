@@ -1,11 +1,13 @@
 package com.example.calendar;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.kizitonwose.calendarview.CalendarView;
 import com.kizitonwose.calendarview.model.CalendarDay;
@@ -21,8 +23,8 @@ import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
+    public static final int REQUEST_CODE = 777;
     CalendarView calendarView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
 
         calendarView.setMonthHeaderBinder(new MonthHeaderFooterBinder<MonthHeader>() {
+
             @Override
             public MonthHeader create(View view) {
                 return new MonthHeader(view);
@@ -54,22 +57,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void bind(DayViewContainer viewContainer, CalendarDay calendarDay) {
-                String dayOfMonth = calendarDay.getDate().getDayOfMonth()+ "";
+                String dayOfMonth = calendarDay.getDate().getDayOfMonth() + "";
                 viewContainer.textView.setText(dayOfMonth);
-
                 viewContainer.textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(this, RecycleAdapter.class);
-                        intent.putExtra("day", dayOfMonth);
-                        startActivityForResult(this, RecycleAdapter);
+                        Intent intent = new Intent(getApplicationContext(), Sub.class);
+                        startActivityForResult(intent, REQUEST_CODE);
                     }
                 });
 
             }
         });
-
-
 
         YearMonth currentMonth = YearMonth.now();
         YearMonth firstMonth = currentMonth.minusMonths(12);
@@ -77,6 +76,16 @@ public class MainActivity extends AppCompatActivity {
         DayOfWeek firstDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
         calendarView.setup(firstMonth, lastMonth, firstDayOfWeek);
         calendarView.scrollToMonth(currentMonth);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            Toast.makeText(getApplicationContext(), "예아", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "으아", Toast.LENGTH_SHORT).show();
+        }
     }
 }

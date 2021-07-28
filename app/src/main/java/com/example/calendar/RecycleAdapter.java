@@ -1,6 +1,7 @@
 package com.example.calendar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 
 public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.CustomViewHolder> {
 
+
     Context context;
 
     private ArrayList<ImageData> arrayList;
@@ -22,6 +24,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.CustomVi
     public RecycleAdapter(ArrayList<ImageData> arrayList) {
         this.arrayList = arrayList;
     }
+
 
     @Override
     public RecycleAdapter.CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,14 +46,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.CustomVi
         holder.image6.setImageResource((arrayList.get(position).getImage6()));
 
         holder.itemView.setTag(position);
-        holder.image1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context.getApplicationContext(), "오예", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
 
 
     }
@@ -82,4 +77,8 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.CustomVi
 
         }
     }
+
+
+
+
 }
