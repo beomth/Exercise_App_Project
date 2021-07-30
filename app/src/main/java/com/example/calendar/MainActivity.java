@@ -1,8 +1,6 @@
 package com.example.calendar;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +12,6 @@ import com.kizitonwose.calendarview.model.CalendarDay;
 import com.kizitonwose.calendarview.model.CalendarMonth;
 import com.kizitonwose.calendarview.ui.DayBinder;
 import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder;
-import com.kizitonwose.calendarview.ui.ViewContainer;
 
 import java.time.DayOfWeek;
 import java.time.YearMonth;
@@ -65,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 viewContainer.textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), Sub.class);
+                        Intent intent = new Intent(getApplicationContext(), SubActivity.class);
                         startActivityForResult(intent, REQUEST_CODE);
                     }
                 });
