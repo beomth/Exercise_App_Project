@@ -1,4 +1,4 @@
-package com.example.calendar;
+package com.example.calendar.notacitivity;
 
 public class ImageData {
 

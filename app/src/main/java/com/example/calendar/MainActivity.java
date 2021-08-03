@@ -1,108 +1,85 @@
 package com.example.calendar;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.CalendarView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kizitonwose.calendarview.CalendarView;
-import com.kizitonwose.calendarview.model.CalendarDay;
-import com.kizitonwose.calendarview.model.CalendarMonth;
-import com.kizitonwose.calendarview.ui.DayBinder;
-import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.time.DayOfWeek;
-import java.time.YearMonth;
-import java.time.temporal.WeekFields;
-import java.util.Locale;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.request.RequestOptions;
+
+import static android.content.ContentValues.TAG;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private long BackBtnTime = 0;
-    public static final int REQUEST_CODE = 777;
-    CalendarView calendarView;
+    private long backBtnTime = 0;
+    private TextView textView;
 
-    //onCreate
+    private CalendarView calendarView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        calendarView = findViewById(R.id.calendarView);
+        textView = findViewById(R.id.textView1);
+        calendarView = findViewById(R.id.simpleCalendarView);
 
-        calendarView.setMonthHeaderBinder(new MonthHeaderFooterBinder<MonthHeader>() {
-
+        //날짜 클릭시 값 넘겨주는 메쏘드
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() { //선택된 것의 날짜를 알려주는 메쏘드
             @Override
-            public MonthHeader create(View view) {
-                return new MonthHeader(view);
-            }
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                String date = year + "/" + (month + 1) + "/" + dayOfMonth;
+                Log.d(TAG, "onSelectedDauChange : mm/dd/yyyy : " + date);
 
-            @Override
-            public void bind(MonthHeader viewContainer, CalendarMonth calendarMonth) {
-                String year = calendarMonth.getYear() + "년";
-                String month = calendarMonth.getMonth() + "월";
-                viewContainer.textView.setText(year + " " + month);
-
+                Intent intent = new Intent(MainActivity.this, ImageRecycleActivity.class);
+                intent.putExtra("date", date);
+                startActivity(intent);
             }
         });
 
-        //달력 뷰를 보여주고, 클릭했을 때 인텐트 값을 넘겨줌
-        calendarView.setDayBinder(new DayBinder<DayViewContainer>() {
-            @Override
-            public DayViewContainer create(View view) {
-                return new DayViewContainer(view);
-            }
 
-            @Override
-            public void bind(DayViewContainer viewContainer, CalendarDay calendarDay) {
-                String dayOfMonth = calendarDay.getDate().getDayOfMonth() + "";
-                viewContainer.textView.setText(dayOfMonth);
-                viewContainer.textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), SubActivity.class);
-                        startActivityForResult(intent, REQUEST_CODE);
-                    }
-                });
-
-            }
-        });
-        //뷰 보여줌
-        YearMonth currentMonth = YearMonth.now();
-        YearMonth firstMonth = currentMonth.minusMonths(12);
-        YearMonth lastMonth = currentMonth.plusMonths(12);
-        DayOfWeek firstDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
-        calendarView.setup(firstMonth, lastMonth, firstDayOfWeek);
-        calendarView.scrollToMonth(currentMonth);
+//        MultiTransformation<Bitmap> multi = new MultiTransformation<>(new BlurTransformation(25), new GrayscaleTransformation());
+//        Glide.with(holder.itemView.getContext()).load(uri).apply(RequestOptions.bitmapTransform(multi)).into(holder.imageView);
+//                GradientDrawable gradientDrawable = (GradientDrawable) GroupMessageActivity.this.getDrawable(R.drawable.radius);
+//                holder.imageView.setBackground(gradientDrawable);
+//                holder.imageView.setClipToOutline(true);
+//        holder.imageView.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                holder.progressbar.setVisibility(View.VISIBLE);
+//                holder.progressbar.getIndeterminateDrawable().setColorFilter(Color.rgb(255, 255, 255), PorterDuff.Mode.MULTIPLY);
+//            }
+//        });
+//        textView.setOnClickListener(v -> {
+//            startActivity(new Intent(getApplicationContext(), RecycleImageActivity.class));
+//        });
     }
 
 
-    //인텐트 값을 받음
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-            Toast.makeText(getApplicationContext(), "예아", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "으아", Toast.LENGTH_SHORT).show();
-        }
-    }
-
+    // 두번 눌러서 종료하기
     @Override
     public void onBackPressed() {
+        //첫번째 눌렀을 때 막고
+
+        //두번째 눌렀을 때 종료
         long curTime = System.currentTimeMillis();
-        long gapTime = curTime - BackBtnTime;
+        long gapTime = curTime - backBtnTime;
 
-        if(0 <= gapTime && 2000 >= gapTime){
+        if (0 <= gapTime && 2000 >= gapTime) {
             super.onBackPressed();
+        } else {
+            backBtnTime = curTime;
+            Toast.makeText(this, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
         }
-        else{
-            BackBtnTime = curTime;
-            Toast.makeText(this, "한번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show();
-        }
-
     }
 }
