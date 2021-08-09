@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 //            public void run() {
 //                holder.progressbar.setVisibility(View.VISIBLE);
 //                holder.progressbar.getIndeterminateDrawable().setColorFilter(Color.rgb(255, 255, 255), PorterDuff.Mode.MULTIPLY);
-//            }
+//            }.
 //        });
 //        textView.setOnClickListener(v -> {
 //            startActivity(new Intent(getApplicationContext(), RecycleImageActivity.class));
