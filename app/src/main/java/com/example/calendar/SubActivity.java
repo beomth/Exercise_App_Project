@@ -24,7 +24,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageRecycleActivity extends AppCompatActivity {
+public class SubActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ImgRecyclerAdapter imgRecyclerAdapter;

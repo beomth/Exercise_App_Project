@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Calendar">
-        <activity android:name=".MemoRecycle"></activity>
+        <activity android:name=".ModifyRecyclerView"></activity>
+        <activity android:name=".MemoRecycle" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashActivityTheme">
@@ -20,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".ImageRecycleActivity" />
+        <activity android:name=".SubActivity" />
     </application>
 
 </manifest>
